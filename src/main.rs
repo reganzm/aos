@@ -29,8 +29,14 @@ pub extern "C" fn _start() -> ! {
 
     println!("hello world! {}", "regan");
     //panic!("SOME panic message");
+
+    aos::init();
+    x86_64::instructions::interrupts::int3();
+
     #[cfg(test)]
     test_main();
+
+    println!("testing...");
     loop {}
 }
 
