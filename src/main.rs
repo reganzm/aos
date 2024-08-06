@@ -41,6 +41,12 @@ pub extern "C" fn _start() -> ! {
     //}
     //stack_overflow();
 
+    //loop {
+    //    // 引发死锁
+    //    use aos::print;
+    //    for _ in 0..100000{}
+    //    print!("——");
+    //}
     #[cfg(test)]
     test_main();
 
