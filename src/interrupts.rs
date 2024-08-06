@@ -132,3 +132,4 @@ extern "x86-interrupt" fn double_fault_handler(
 fn test_breakpoint_exception() {
     x86_64::instructions::interrupts::int3();
 }
+
