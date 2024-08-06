@@ -27,24 +27,24 @@ pub extern "C" fn _start() -> ! {
     //)
     // .unwrap();
 
-    println!("hello world! {}", "regan");
+    //println!("hello world! {}", "regan");
     //panic!("SOME panic message");
 
     aos::init();
-    x86_64::instructions::interrupts::int3();
+    //x86_64::instructions::interrupts::int3();
 
     //unsafe {
     //    *(0xdeadbeef as *mut u8) = 33;
     //}
-    fn stack_overflow() {
-        stack_overflow();
-    }
-    stack_overflow();
+    //fn stack_overflow() {
+    //    stack_overflow();
+    //}
+    //stack_overflow();
 
     #[cfg(test)]
     test_main();
 
-    println!("testing...");
+    println!("not crash!");
     loop {}
 }
 

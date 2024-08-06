@@ -19,7 +19,7 @@ x86_64={version="0.14.2"}
 # 
 uart_16550="0.2.0"
 bit_field = "0.10.2"
-
+pic8259="0.10.1"
 
 
 [package.metadata.bootimage]

@@ -1,11 +1,11 @@
 #![no_std]
 #![no_main]
 #![feature(abi_x86_interrupt)]
-use aos::{exit_qemu, serial_print,serial_println, QemuExitCode};
+use aos::{exit_qemu, serial_print, serial_println, QemuExitCode};
 use core::panic::PanicInfo;
 use lazy_static::lazy_static;
-use x86_64::structures::idt::InterruptStackFrame;
 use x86_64::structures::idt::InterruptDescriptorTable;
+use x86_64::structures::idt::InterruptStackFrame;
 
 lazy_static! {
     static ref TEST_IDT: InterruptDescriptorTable = {
