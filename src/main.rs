@@ -51,7 +51,8 @@ pub extern "C" fn _start() -> ! {
     test_main();
 
     println!("not crash!");
-    loop {}
+    aos::hlt_loop();
+    
 }
 
 // 自定义panic处理函数
@@ -59,7 +60,7 @@ pub extern "C" fn _start() -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    aos::hlt_loop();
 }
 
 #[cfg(test)]
