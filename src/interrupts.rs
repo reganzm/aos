@@ -41,12 +41,29 @@ lazy_static! {
         idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
         // 注册键盘中断
         idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyboard_interrupt_handler);
+        // 注册页中断处理
+        idt.page_fault.set_handler_fn(page_fault_handler);
         idt
     };
 }
 
 pub fn init_idt() {
     IDT.load();
+}
+
+use crate::hlt_loop;
+use x86_64::registers::control::Cr2;
+use x86_64::structures::idt::PageFaultErrorCode;
+
+extern "x86-interrupt" fn page_fault_handler(
+    stack_frame: InterruptStackFrame,
+    error_code: PageFaultErrorCode,
+) {
+    println!("Exception : Page Fault");
+    println!("Accessed Aress:{:?}", Cr2::read());
+    println!("Error code:{:?}", error_code);
+    println!("{:#?}", stack_frame);
+    hlt_loop();
 }
 
 extern "x86-interrupt" fn keyboard_interrupt_handler_v1(_stack_frame: InterruptStackFrame) {
@@ -132,4 +149,3 @@ extern "x86-interrupt" fn double_fault_handler(
 fn test_breakpoint_exception() {
     x86_64::instructions::interrupts::int3();
 }
-

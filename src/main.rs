@@ -47,6 +47,24 @@ pub extern "C" fn _start() -> ! {
     //    for _ in 0..100000{}
     //    print!("——");
     //}
+
+    //let ptr = 0x2031b2 as *mut u8;
+    //unsafe {
+    //    let x = *ptr;
+    //};
+    //println!("read ok");
+
+    //unsafe {
+    //    *ptr = 42;
+    //}
+    // 访问页表
+    use x86_64::registers::control::Cr3;
+    let (level_4_page_table_addr, cr3_flag) = Cr3::read();
+    println!(
+        "level 4 page table addr:{:?} cr3 flag:{:#?}",
+        level_4_page_table_addr, cr3_flag
+    );
+
     #[cfg(test)]
     test_main();
 
