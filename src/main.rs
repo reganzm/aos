@@ -52,7 +52,6 @@ pub extern "C" fn _start() -> ! {
 
     println!("not crash!");
     aos::hlt_loop();
-    
 }
 
 // 自定义panic处理函数
