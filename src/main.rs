@@ -5,10 +5,13 @@
 #![test_runner(aos::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 use aos::println;
+use aos::serial_print;
+use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-
-#[no_mangle]
-pub extern "C" fn _start() -> ! {
+//#[no_mangle]
+//pub extern "C" fn _start(boot_info:&'static BootInfo) -> ! {
+entry_point!(kernal_main);
+fn kernal_main(boot_info: &'static BootInfo) -> ! {
     //let vga_buffer = 0xb8000 as *mut u8;
     //for (i, &byte) in HELLO.iter().enumerate() {
     //    unsafe {
@@ -31,6 +34,7 @@ pub extern "C" fn _start() -> ! {
     //panic!("SOME panic message");
 
     aos::init();
+    println!("{:#?}", boot_info);
     //x86_64::instructions::interrupts::int3();
 
     //unsafe {
@@ -61,7 +65,7 @@ pub extern "C" fn _start() -> ! {
     use x86_64::registers::control::Cr3;
     let (level_4_page_table_addr, cr3_flag) = Cr3::read();
     println!(
-        "level 4 page table addr:{:?} cr3 flag:{:#?}",
+        "level 4 page table addr:{:#?} cr3 flag:{:#?}",
         level_4_page_table_addr, cr3_flag
     );
 

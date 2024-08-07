@@ -11,7 +11,7 @@ edition = "2021"
 panic="abort"
 
 [dependencies]
-bootloader="0.9"
+bootloader={version="0.9",features=["map_physical_memory"]}
 volatile="0.2.6"
 spin={version="0.5.2"}
 lazy_static={version="1.0",features=["spin_no_std"]}
@@ -27,7 +27,8 @@ test-args=["-device","isa-debug-exit,iobase=0xf4,iosize=0x04","-serial","stdio",
 test-success-exit-code=33 #(0x10 << 1)|1
 test-timeout=300 # in seconds
 
-
+[package.metadata.bootloader]
+physical-memory-offset="0x0000f0000000000"
 
 [[test]]
 name="should_panic"
