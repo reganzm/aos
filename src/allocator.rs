@@ -9,10 +9,16 @@ use x86_64::{
     VirtAddr,
 };
 
+pub mod bump;
+
+use bump::BumpAllocator;
+
 #[global_allocator]
 //static ALLOCATOR: Dummy = Dummy;
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
+//static ALLOCATOR: LockedHeap = LockedHeap::empty();
+//use bumpallocator
 
+static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 pub const HEAP_SIZE: usize = 1024 * 1024; //1Mb
 
@@ -55,4 +61,28 @@ pub fn init_heap(
         ALLOCATOR.lock().init(HEAP_START, HEAP_SIZE);
     }
     Ok(())
+}
+
+pub struct Locked<A> {
+    inner: spin::Mutex<A>,
+}
+
+impl<A> Locked<A> {
+    pub const fn new(inner: A) -> Self {
+        Locked {
+            inner: spin::Mutex::new(inner),
+        }
+    }
+    pub fn lock(&self) -> spin::MutexGuard<A> {
+        self.inner.lock()
+    }
+}
+
+fn align_up(addr: usize, align: usize) -> usize {
+    let remainder = addr % align;
+    if remainder == 0 {
+        addr
+    } else {
+        addr - remainder + align
+    }
 }
