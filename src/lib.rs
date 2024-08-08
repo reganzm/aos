@@ -10,12 +10,15 @@ use core::panic::PanicInfo;
 #[cfg(test)]
 entry_point!(test_kernal_main);
 
+extern crate alloc;
 extern crate bit_field;
+pub mod allocator;
 pub mod gdt;
 pub mod interrupts;
 pub mod memory;
 pub mod serial;
 pub mod vga_buffer;
+
 pub fn hlt_loop() -> ! {
     loop {
         x86_64::instructions::hlt();
