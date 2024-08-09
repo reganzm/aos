@@ -4,6 +4,7 @@
 #![feature(abi_x86_interrupt)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
+#![feature(const_mut_refs)] // 常函数中使用可变引用
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
@@ -17,6 +18,7 @@ pub mod gdt;
 pub mod interrupts;
 pub mod memory;
 pub mod serial;
+pub mod task;
 pub mod vga_buffer;
 
 pub fn hlt_loop() -> ! {

@@ -11,6 +11,17 @@ use core::panic::PanicInfo;
 extern crate alloc;
 use alloc::{boxed::Box, rc::Rc, vec, vec::Vec};
 use x86_64::VirtAddr;
+
+use aos::task::{simple_executor::SimpleExecutor, Task};
+
+async fn async_number() -> u32 {
+    42
+}
+async fn example_task() {
+    let number = async_number().await;
+    println!("async number:{}", number);
+}
+
 //#[no_mangle]
 //pub extern "C" fn _start(boot_info:&'static BootInfo) -> ! {
 entry_point!(kernal_main);
@@ -149,7 +160,10 @@ fn kernal_main(boot_info: &'static BootInfo) -> ! {
     println!("current reference count is:{}", Rc::strong_count(&cr));
     core::mem::drop(rc);
     println!("current reference count is:{}", Rc::strong_count(&cr));
-
+    // 异步任务
+    let mut executor = SimpleExecutor::new();
+    executor.spawn(Task::new(example_task()));
+    executor.run();
     #[cfg(test)]
     test_main();
 

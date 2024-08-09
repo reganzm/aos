@@ -10,15 +10,23 @@ use x86_64::{
 };
 
 pub mod bump;
+pub mod fixed_size_block;
+pub mod linked_list;
 
 use bump::BumpAllocator;
-
+use fixed_size_block::FixedSizeBlockAllocator;
+use linked_list::LinkedListAllocator;
 #[global_allocator]
 //static ALLOCATOR: Dummy = Dummy;
 //static ALLOCATOR: LockedHeap = LockedHeap::empty();
 //use bumpallocator
+//static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
+// use linked list allocator
+//static ALLOCATOR: Locked<LinkedListAllocator> = Locked::new(LinkedListAllocator::new());
 
-static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
+// use fixed block allocator
+static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
+
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 pub const HEAP_SIZE: usize = 1024 * 1024; //1Mb
 
