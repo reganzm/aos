@@ -18,7 +18,6 @@ impl SimpleExecutor {
         self.task_queue.push_back(task);
     }
 
-
     pub fn run(&mut self) {
         while let Some(mut task) = self.task_queue.pop_front() {
             let waker = dummy_waker();

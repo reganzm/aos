@@ -12,7 +12,8 @@ extern crate alloc;
 use alloc::{boxed::Box, rc::Rc, vec, vec::Vec};
 use x86_64::VirtAddr;
 
-use aos::task::{simple_executor::SimpleExecutor, Task};
+use aos::task::keyboard;
+use aos::task::{executor::Executor, simple_executor::SimpleExecutor, Task};
 
 async fn async_number() -> u32 {
     42
@@ -161,8 +162,15 @@ fn kernal_main(boot_info: &'static BootInfo) -> ! {
     core::mem::drop(rc);
     println!("current reference count is:{}", Rc::strong_count(&cr));
     // 异步任务
-    let mut executor = SimpleExecutor::new();
+    //let mut executor = SimpleExecutor::new();
+    //executor.spawn(Task::new(example_task()));
+    //executor.spawn(Task::new(keyboard::print_keypress()));
+    //executor.run();
+
+    // 调用实现了waker的excutor
+    let mut executor = Executor::new();
     executor.spawn(Task::new(example_task()));
+    executor.spawn(Task::new(keyboard::print_keypress()));
     executor.run();
     #[cfg(test)]
     test_main();
